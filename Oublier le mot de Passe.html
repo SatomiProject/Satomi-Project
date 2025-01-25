@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Recovery</title>
+    <style>
+        body {
+            background-image: url('/Database/Pictures/Images/studygroup.png');
+            background-size: cover;
+            background-color: green;
+            align-items: center;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    </style>
+    <style>
+        /* Basic form styling */
+        .recovery-form {
+            max-width: 600px;
+            align-items: center;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: none;
+            text-align: center;
+            text-decoration-color: black;
+        }
+        h2{
+            color: azure;
+            position: center;
+          }
+
+        h3{
+            color: azure;
+            position: center;
+          }
+        .recovery-form input {
+            width: 70%;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .recovery-form button {
+            width: 200px;
+            padding: 10px;
+            background-color: #245715;
+            border-radius: 5px;
+            color:white;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body bgcolor="green">
+    <img src="/Database/Pictures/Logos/Picture 1.png" style="width:90%;" alt="centered image">
+    <h2 align="center">
+        <img src="/Database/Pictures/Images/JapanFlagLeft.png" width="50px" alt="responsive images">
+        日本語を学んで世界への新たな扉を開く
+        <img src="/Database/Pictures/Images/JapanFlagRight.png" width="50px" alt="responsive images">
+      </h2>
+    <h2 align="center">Apprendre le Japonais pour une nouvelle ouverture sur le monde</h2>
+    <div class="container">
+
+    <div class="recovery-form">
+        <h2>OUBLIER LE MOT DE PASSE</h2>
+        <h3>Entrer votre Mot de Passe pour revevoir un Code de Verification</h3>
+        <form action="send_verification.php" method="post">
+            <input type="email" name="email" placeholder="Adress email" required>
+            <button type="submit">Envoyer</button>
+        </form>
+    </div>
+    <p>Satomi Project: <a style="color: white;" href="https://satomiproject.jp">Site Web Officiel</a>
+    <p>Pour plus d'information, contactez: <a style="color: white;" href="mailto:satomiproject@gmail.com"> satomiproject@gmail.com</a></p>
+</body>
+</html>

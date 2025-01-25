@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fatima's Portal</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+        /* Basic Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Top Bar Styling */
+        .top-bar {
+            width: 100%;
+            height: 80px;
+            background-color: #245715;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .top-bar h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .top-bar .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .top-bar .user-info span {
+            margin-right: 20px;
+            font-size: 18px;
+        }
+
+        .top-bar .logout-btn {
+            padding: 5px 10px;
+            background-color: #08291a;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 200px;
+            height: 100%;
+            background-color: #245715;
+            color: white;
+            position: fixed;
+            height: 100vh;
+            padding: 10px 0;
+            left: 0;
+        }
+
+        .sidebar-button, .sub-button {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: none;
+            width: 100%;
+            cursor: pointer;
+            border: none;
+            text-align: left;
+            font-size: 16px; /* Ensure font size consistency */
+        }
+        .sidebar-button.has-sub {
+            position: relative; /* Ensure the dropdown arrow aligns properly */
+        }
+
+        .sidebar-button:hover, .sub-button:hover {
+            background-color: #575757;
+        }
+
+        .sub-buttons {
+            display: none;
+            padding-left: 20px;
+        }
+
+        .sidebar-button.has-sub::after {
+            content: "▸"; /* Right arrow */
+            position: absolute;
+            right: 20px;
+            transform: rotate(0deg);
+            transition: transform 0.3s;
+        }
+
+        .sidebar-button.has-sub.open::after {
+            transform: rotate(90deg); /* Down arrow */
+        }
+
+        .sub-buttons.open {
+            display: block;
+        }
+
+        /* Content Button Styling */
+        .content-button {
+            display: inline-block;
+            background-color: #245715;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            margin-left:60px;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .content-button:hover {
+            background-color: #575757;
+        }
+
+/* Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20;
+    padding-left: 220px; /* Adjust for sidebar width */
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 80px;
+}
+
+#logo {
+    height: 80px;
+}
+
+h2 {
+    margin-left:0px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+textarea {
+    width: 100%;
+    height: 50px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+    resize: none;
+}
+button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    font-size: 16px;
+    color: white;
+    background-color: #245715;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #245715;
+}
+.announcements {
+    margin-top: 20px;
+}
+.announcement {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    position: relative;
+}
+.announcement .date {
+    font-size: 12px;
+    color: #666;
+}
+.delete-button {
+    position: absolute;
+    top:0px;
+    right: 10px;
+    background-color: #245715;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-bottom: 2px;
+}
+.delete-button:hover {
+    background-color: #a71d2a;
+}
+</style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <h1>Satomi Project</h1>
+          <div class="user-info">
+          <span>ようこそ, Fatima 先生</span>
+          <a href="http://127.0.0.1:5500/Main%20Entry%20Portal/Main%20Portal.html" class="logout-btn">ログアウト</a>
+      </div>
+  </div>
+     
+  <!-- Side Bar -->
+  <div class="sidebar">
+    <br><br><br><br>
+    <a href="http://127.0.0.1:5500/Teacher_s%20side/Teachers_s%20Portals/Fatima.html" class="sidebar-button">ホーム</a>
+    <br><br>
+    <a href="http://127.0.0.1:5500/Teacher_s%20side/Annoucement%20board/Fatima%20annoucement.html" class="sidebar-button">教師からのお知らせ</a>
+    <br><br>
+    <a href="http://127.0.0.1:5500/Teacher_s%20side/Lesson%20Program/Fatima%20LP.html" class="sidebar-button">レッスンプログラム</a>
+    <br><br>
+    <a href="http://127.0.0.1:5500/Teacher_s%20side/Student%20Inventory/Fatima%20SI.html" class="sidebar-button">学生の情報</a>
+    <br><br>
+    <button class="sidebar-button has-sub" onclick="toggleSubMenu(this)">学生の出席状況</button>
+    <div class="sub-buttons">
+      <a href="http://127.0.0.1:5500/Teacher_s%20side/Student%20Attendance/Fatima%20SA3.html" class="sub-button">Group 3 </a>
+  </div>
+    <br><br>
+    <button class="sidebar-button has-sub" onclick="toggleSubMenu(this)">学生の成績</button>
+    <div class="sub-buttons">
+        <a href="http://127.0.0.1:5500/Teacher_s%20side/Student%20grades/Fatima%20SG3.html" class="sub-button">Group 3 </a>
+    </div>
+    <br><br>
+    <a href="http://127.0.0.1:5500/Teacher_s%20side/JLPT/Fatima%20JLPT.html" class="sidebar-button">JLPT</a>
+</div>
+
+<header>
+    <img id="logo" src="/Database/Pictures/Logos/Picture 1.png" width="25%">
+    <span id="current-date"></span>
+</header>
+
+  <h2>教師からのお知らせ</h2>
+  <label for="announcementInput">お知らせ編集</label>
+  <textarea id="announcementInput" placeholder="ここにお知らせを書いてください..."></textarea>
+  <button id="saveButton">保存</button>
+
+  <div id="message" style="color: green; margin-top: 10px;"></div>
+  <div class="announcements" id="announcements"></div>
+
+<script>
+    const message = document.getElementById('message');
+    const announcementsDiv = document.getElementById('announcements');
+
+    // Load announcements on page load
+    function loadAnnouncements() {
+        const announcements = JSON.parse(localStorage.getItem('announcements')) || [];
+        announcementsDiv.innerHTML = '';
+        announcements.forEach(({ text, date }, index) => {
+            const announcement = document.createElement('div');
+            announcement.classList.add('announcement');
+            announcement.innerHTML = `
+                <p>${text}</p>
+                <p class="date">${date}</p>
+                <button class="delete-button" data-index="${index}">消す</button>
+            `;
+            announcementsDiv.appendChild(announcement);
+        });
+        attachDeleteEventListeners();
+    }
+
+    // Save announcement with timestamp
+    saveButton.addEventListener('click', () => {
+        const text = announcementInput.value.trim();
+        if (text === '') {
+            message.style.color = 'red';
+            message.textContent = 'お知らせを入力してください.';
+            return;
+        }
+
+        const date = new Date().toLocaleString(); // Current date and time
+        const announcement = { text, date };
+
+        // Get existing announcements
+        const announcements = JSON.parse(localStorage.getItem('announcements')) || [];
+        announcements.push(announcement);
+
+        // Save back to localStorage
+        localStorage.setItem('announcements', JSON.stringify(announcements));
+        message.style.color = 'green';
+        message.textContent = 'お知らせが保存されました!';
+        announcementInput.value = ''; // Clear the input
+        loadAnnouncements(); // Reload the announcements
+    });
+
+    // Attach event listeners to delete buttons
+    function attachDeleteEventListeners() {
+        const deleteButtons = document.querySelectorAll('.delete-button');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                const index = event.target.getAttribute('data-index');
+                deleteAnnouncement(index);
+            });
+        });
+    }
+
+    // Delete announcement by index
+    function deleteAnnouncement(index) {
+        let announcements = JSON.parse(localStorage.getItem('announcements')) || [];
+        announcements.splice(index, 1); // Remove the specific announcement
+        localStorage.setItem('announcements', JSON.stringify(announcements)); // Save back to localStorage
+        loadAnnouncements(); // Reload the announcements
+        message.style.color = 'green';
+        message.textContent = 'お知らせが削除されました!';
+    }
+
+    // Initial load
+    loadAnnouncements();
+
+    function toggleSubMenu(button) {
+        const subMenu = button.nextElementSibling;
+        if (subMenu && subMenu.classList.contains('sub-buttons')) {
+            button.classList.toggle('open');
+            subMenu.classList.toggle('open');
+        }
+    }
+  </script>
+</body>
+</html>

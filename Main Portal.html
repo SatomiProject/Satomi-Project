@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satomi Project</title>
+    <style>
+    body {
+      background-image: url('/Database/Pictures/Images/studygroup.png');
+      background-size: cover;
+      background-color: green;
+      align-items: center;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+</style>
+    <style>
+        /* Basic styling for container */
+        .container {
+          max-width: 600px;
+          align-items: center;
+          margin: 50px auto;
+          padding: 20px;
+          border: 1px solid #ddd;
+          border-radius: 10px;
+          background-color: none;
+          text-align: center;
+          align-content: center;
+          text-decoration-color: black;
+        }
+        h2{
+          color: azure;
+          position: center;
+        }
+      
+        /* Form styling */
+        form {
+          display: none; /* Hide all forms initially */
+        }
+      
+        /* Display the active form */
+        form.active {
+          display: block;
+        }
+
+      .container input {
+        width: 45%;
+        padding: 7px;
+        border-radius: 5px;
+        margin: 10px 0;
+        font-size: 16px;
+      }
+
+      .container p {
+        color: rgb(10, 10, 10);
+        font-size: 19px;
+        font-style: oblique;
+      }
+
+      .container a {
+        color: red;
+        font-size: 19px;
+      }
+      
+      /* Button styling */
+      .container button {
+        display: inline-block;
+        background-color: rgba(10, 107, 10, 0.726);
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        margin: 10px;
+        border: none;
+        border-radius: 5px;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    p {
+      color: rgb(10, 10, 10);
+      font-size: 20px;
+    }
+      </style>
+</head>
+<body>
+    <img src="/Database/Pictures/Logos/Picture 1.png" style="width:90%;" alt="centered image">
+    <h2 align="center">
+      <img src="/Database/Pictures/Images/JapanFlagLeft.png" width="50px" alt="responsive images">
+        日本語を学んで世界への新たな扉を開く
+        <img src="/Database/Pictures/Images/JapanFlagRight.png" width="50px" alt="responsive images">
+      </h2>
+    <h2 align="center">Apprendre le Japonais pour une nouvelle ouverture sur le monde</h2>
+    <div class="container">
+        <!-- Login Form -->
+        <form id="loginForm" class="active">
+          <h2>CONNEXION</h2>
+          <form id="loginForm">
+
+            <input type="text" id="firstname" placeholder="Prénom"> <input type="text" id="lastname" required placeholder="Nom"><br>
+
+            <input type="text" id="id" placeholder="SP..."><br>
+    
+            <input type="password" id="password" placeholder=" Mot de Passe"><br>
+
+            <button type="submit">S'identifier</button><script src="login.js"></script>
+            <br><br>
+        <a href="http://127.0.0.1:5500/Main%20Entry%20Portal/Oublier%20le%20mot%20de%20Passe.html">Oublier le mot de Passe</a><br>
+        <p>Pas de compte? <button type="button" class="toggle-btn" onclick="toggleForms()">S'inscrire</button></p>
+        </form>
+        
+        <!-- Registration Form -->
+        <form id="registerForm">
+          <h2>ENREGISTREMENT</h2>
+          <input type="text" placeholder="Nom" required> <input type="text" placeholder="Prénom" required><br>
+          <input type="text" placeholder="ID" required><br>
+          <input type="email" placeholder="Email" required><br>
+          <input type="password" placeholder="Mot de Passe" required><br>
+          <button onclick="register()">S'inscrire</button>
+          <p>Déja un compte existant? <button onclick="toggleForms()">S'identifier</button></p>
+        </form>
+      </div>
+      
+      <script>
+        // JavaScript function to toggle between forms
+        function toggleForms() {
+          const loginForm = document.getElementById('loginForm');
+          const registerForm = document.getElementById('registerForm');
+          
+          loginForm.classList.toggle('active');
+          registerForm.classList.toggle('active');
+        }
+      </script>
+    <p>Satomi Project: <a style="color: white;" href="https://satomiproject.jp">Site Web Officiel</a>
+    <p>Pour plus d'information, contactez: <a style="color: white;" href="mailto:satomiproject@gmail.com"> satomiproject@gmail.com</a></p>
+</body>
+</html>

@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fatima's Portal</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+        /* Basic Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Top Bar Styling */
+        .top-bar {
+            width: 100%;
+            height: 80px;
+            background-color: #245715;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .top-bar h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .top-bar .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .top-bar .user-info span {
+            margin-right: 20px;
+            font-size: 18px;
+        }
+
+        .top-bar .logout-btn {
+            padding: 5px 10px;
+            background-color: #08291a;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 200px;
+            height: 100%;
+            background-color: #245715;
+            color: white;
+            position: fixed;
+            height: 100vh;
+            padding: 10px 0;
+            left: 0;
+        }
+
+        .sidebar-button, .sub-button {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: none;
+            width: 100%;
+            cursor: pointer;
+            border: none;
+            text-align: left;
+            font-size: 16px; /* Ensure font size consistency */
+        }
+
+        .sidebar-button:hover, .sub-button:hover {
+            background-color: #575757;
+        }
+
+        .sub-buttons {
+            display: none;
+            padding-left: 20px;
+        }
+
+        .sidebar-button.has-sub::after {
+            content: "▸"; /* Right arrow */
+            position: absolute;
+            right: 20px;
+            transform: rotate(0deg);
+            transition: transform 0.3s;
+        }
+
+        .sidebar-button.has-sub.open::after {
+            transform: rotate(90deg); /* Down arrow */
+        }
+
+        .sub-buttons.open {
+            display: block;
+        }
+
+        /* Content Button Styling */
+        .content-button {
+            display: inline-block;
+            background-color: #245715;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            margin-left:60px;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .content-button:hover {
+            background-color: #575757;
+        }
+/* Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding-left: 220px; /* Adjust for sidebar width */
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 80px;
+}
+
+#logo {
+    height: 80px;
+}
+
+h2 {
+    margin-left:0px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+.button-group {
+  margin-bottom: 20px;
+}
+
+.button-group button {
+  padding: 10px 20px;
+  margin-right: 10px;
+  background-color: #245715;
+  border-radius: 4px;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.search-section {
+  margin-bottom: 20px;
+
+}
+
+.search-section input {
+  padding: 8px;
+  margin-right: 10px;
+  border-radius: 4px;
+  font-size: 1rem;
+  width: 250px;
+}
+
+.search-section button {
+  padding: 8px 20px;
+  font-size: 1rem;
+  border-radius: 4px;
+  color: #ffffff;
+  background-color: #245715;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  display: none; /* Hide tables by default */
+}
+
+.result-table {
+  display: none; /* Hidden by default */
+  margin-top: 20px;
+  text-align: left;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  text-align: left;
+  padding: 8px;
+}
+
+th {
+  background-color: #245715;
+  color: white;
+}
+
+.id {
+  width: 5%;
+  text-align: left;
+}
+
+.name {
+  width: 50%;
+  text-align: left;
+}
+.page {
+  width: 7%;
+  text-align: left;
+}
+.preview {
+  width: 10%;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <h1>Satomi Project</h1>
+          <div class="user-info">
+          <span>ようこそ, Fatima 先生</span>
+          <a href="http://127.0.0.1:5500/Main%20Entry%20Portal/Main%20Portal.html" class="logout-btn">ログアウト</a>
+      </div>
+  </div>
+     
+  <!-- Side Bar -->
+  <div class="sidebar">
+    <br><br><br><br>
+    <a href="http://127.0.0.1:5500/Teacher_s%20side/Teachers_s%20Portals/Fatima.html" class="sidebar-button">ホーム</a>
+    <br><br>
+    <a href="http://127.0.0.1:5500/Teacher_s%20side/Annoucement%20board/Fatima%20annoucement.html" class="sidebar-button">教師からのお知らせ</a>
+    <br><br>
+    <a href="http://127.0.0.1:5500/Teacher_s%20side/Lesson%20Program/Fatima%20LP.html" class="sidebar-button">レッスンプログラム</a>
+    <br><br>
+    <a href="http://127.0.0.1:5500/Teacher_s%20side/Student%20Inventory/Fatima%20SI.html" class="sidebar-button">学生の情報</a>
+    <br><br>
+    <button class="sidebar-button has-sub" onclick="toggleSubMenu(this)">学生の出席状況</button>
+    <div class="sub-buttons">
+      <a href="http://127.0.0.1:5500/Teacher_s%20side/Student%20Attendance/Fatima%20SA3.html" class="sub-button">Group 3 </a>
+  </div>
+    <br><br>
+    <button class="sidebar-button has-sub" onclick="toggleSubMenu(this)">学生の成績</button>
+    <div class="sub-buttons">
+        <a href="http://127.0.0.1:5500/Teacher_s%20side/Student%20grades/Fatima%20SG3.html" class="sub-button">Group 3 </a>
+    </div>
+    <br><br>
+    <a href="http://127.0.0.1:5500/Teacher_s%20side/JLPT/Fatima%20JLPT.html" class="sidebar-button">JLPT</a>
+</div>
+
+<header>
+    <img id="logo" src="/Database/Pictures/Logos/Picture 1.png" width="25%">
+    <span id="current-date"></span>
+</header>
+
+  <h2>学生の情報</h2>
+  <div class="search-section">
+    <input type="text" id="searchInput"
+        placeholder="Search by 名前">
+    <button onclick="performSearch()">Search</button>
+</div>
+<br><br>
+<table class="result-table" id="searchResultTable">
+    <thead>
+        <tr>
+            <th class="id">Nbr.</th>
+            <th class="name">名前</th>
+            <th class="phone">電話番号</th>
+            <th class="email">電子メール</th>
+            <th class="preview1">備考</th>
+            <th class="preview2">プレビュー</th>
+        </tr>
+    </thead>
+    <tbody id="searchResultBody">
+        <!-- Search results will be appended here -->
+    </tbody>
+</table>
+<br><br>
+<div class="button-group">
+    <button onclick="showTable('groupA')">Group 1</button>
+    <button onclick="showTable('groupB')">Group 2</button>
+    <button onclick="showTable('groupC')">Group 3</button>
+    <button onclick="showTable('groupD')">Group 4</button>
+</div>
+<br><br>
+<table id="groupA">
+    <thead>
+        <tr>
+            <th class="id">ID</th>
+            <th class="name">名前</th>
+            <th class="phone">電話番号</th>
+            <th class="email">電子メール</th>
+            <th class="preview1">備考</th>
+            <th class="preview2">プレビュー</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="id">SP001</td>
+            <td class="name">Ba Abdoulaye</td>
+            <td class="phone">123-456-7890</td>
+            <td class="email">namea1@example.com</td>
+            <td class="preview1"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20A/CV%20PDFs/Ba%20Abdoulaye%20履歴書9.pdf"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20A/Pictures/Ba%20Abdoulaye.pdf"
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <td class="id">SP002</td>
+            <td class="name">Sylla khalilou</td>
+            <td class="phone">098-765-4321</td>
+            <td class="email">namea2@example.com</td>
+            <td class="preview1"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20A/CV%20PDFs/Sylla%20khalilou%20履歴書4.pdf"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20A/Pictures/Sylla%20khalilou.pdf"
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <td class="id">SP003</td>
+            <td class="name">Sylla Aïssatou Dia</td>
+            <td class="phone">084-756-5004</td>
+            <td class="email">namea3@example.com</td>
+            <td class="preview1"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20A/CV%20PDFs/Sylla%20Aissatou%20Dia%20履歴書13.pdf"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20A/Pictures/Sylla%20Aïssatou%20Dia.pdf"
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <td class="id">SP004</td>
+            <td class="name">Sow Mansour</td>
+            <td class="phone">011-984-9320</td>
+            <td class="email">namea4@example.com</td>
+            <td class="preview1"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20A/CV%20PDFs/Sow%20MAnsour%20履歴書3.pdf"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20A/Pictures/Sow%20Mansour.pdf"
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <td class="id">SP005</td>
+            <td class="name">Seck Mame Khoudia</td>
+            <td class="phone">027-296-158</td>
+            <td class="email">namea5@example.com</td>
+            <td class="preview1"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20A/CV%20PDFs/Seck%20Mame%20Khoudia%20履歴書2.pdf"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20A/Pictures/Seck%20Mame%20Khoudia.pdf"
+                    target="_blank">見る</a></td>
+        </tr>
+
+    </tbody>
+</table>
+
+<table id="groupB">
+    <thead>
+        <tr>
+            <th class="id">ID</th>
+            <th class="name">名前</th>
+            <th class="phone">電話番号</th>
+            <th class="email">電子メール</th>
+            <th class="preview1">備考</th>
+            <th class="preview2">プレビュー</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="id">SP006</td>
+            <td class="name">Sarr Abdoulaye</td>
+            <td class="phone">456-123-7890</td>
+            <td class="email">name6@example.com</td>
+            <td class="preview1"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20B/CV%20PDFs/Sarr%20Abdoulaye%20履歴書8.pdf"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20B/Pictures/Sarr%20Abdoulaye.pdf"
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <td class="id">SP007</td>
+            <td class="name">Ndiaye Diarra</td>
+            <td class="phone">321-654-0987</td>
+            <td class="email">name7@example.com</td>
+            <td class="preview1"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20B/CV%20PDFs/Ndiaye%20Diarra%20履歴書14.pdf"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20B/Pictures/Ndiaye%20Diarra.pdf"
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <td class="id">SP008</td>
+            <td class="name">Ndiaye Adama</td>
+            <td class="phone">917-468-0745</td>
+            <td class="email">name8@example.com</td>
+            <td class="preview1"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20B/CV%20PDFs/Ndiaye%20Adama%20履歴書11.pdf"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20B/Pictures/Ndiaye%20Adama.pdf"
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <td class="id">SP009</td>
+            <td class="name">Ndiaye Abdoulaye</td>
+            <td class="phone">264-759-3702</td>
+            <td class="email">name9@example.com</td>
+            <td class="preview1"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20B/CV%20PDFs/Ndiaye%20Abdoulaye%20履歴書10.pdf"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20B/Pictures/Ndiaye%20Abdoulaye.pdf"
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <td class="id">SP010</td>
+            <td class="name">Missirah Abdoulaye</td>
+            <td class="phone">545-582-4825</td>
+            <td class="email">name10@example.com</td>
+            <td class="preview1"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20B/CV%20PDFs/Missirah%20Abdoulaye%20履歴書15.pdf"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20B/Pictures/Missirah%20Abdoulaye.pdf"
+                    target="_blank">見る</a></td>
+        </tr>
+    </tbody>
+</table>
+
+<table id="groupC">
+    <thead>
+        <tr>
+            <th class="id">ID</th>
+            <th class="name">名前</th>
+            <th class="phone">電話番号</th>
+            <th class="email">電子メール</th>
+            <th class="preview1">備考</th>
+            <th class="preview2">プレビュー</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="id">SP011</td>
+            <td class="name">Tine Mariame</td>
+            <td class="phone">789-456-1230</td>
+            <td class="email">name11@example.com</td>
+            <td class="preview1"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20C/CV%20PDFs/Mariame%20Tine%20履歴書%201.pdf"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20C/Pictures/Tine%20Mariame.pdf"
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <td class="id">SP012</td>
+            <td class="name">Kandji Khadim</td>
+            <td class="phone">654-321-9870</td>
+            <td class="email">name12@example.com</td>
+            <td class="preview1"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20C/CV%20PDFs/kandji%20khadim%20履歴書5.pdf"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20C/Pictures/Kandji%20Khadim.pdf"
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <td class="id">SP013</td>
+            <td class="name">Ba Imame Malick</td>
+            <td class="phone">072-377-9254</td>
+            <td class="email">name13@example.com</td>
+            <td class="preview1"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20C/CV%20PDFs/Imame%20Malick%20ba%20履歴書6.pdf"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20C/Pictures/Ba%20Imame%20Malick.pdf"
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <td class="id">SP014</td>
+            <td class="name">Gueye Fatima Zahra</td>
+            <td class="phone">143-426-9154</td>
+            <td class="email">name14@example.com</td>
+            <td class="preview1"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20C/CV%20PDFs/Gueye%20Fatima%20Zahra%20履歴書7.pdf"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20C/Pictures/Gueye%20Fatima%20Zahra.pdf"
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <td class="id">SP015</td>
+            <td class="name">Dia Awa</td>
+            <td class="phone">025-250-2017</td>
+            <td class="email">name15@example.com</td>
+            <td class="preview1"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20C/CV%20PDFs/Dia%20Awa%20履歴書16.pdf"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20C/Pictures/Dia%20Awa.pdf"
+                    target="_blank">見る</a></td>
+        </tr>
+    </tbody>
+</table>
+
+<table id="groupD">
+    <thead>
+        <tr>
+            <th class="id">ID</th>
+            <th class="name">名前</th>
+            <th class="phone">電話番号</th>
+            <th class="email">電子メール</th>
+            <th class="preview1">備考</th>
+            <th class="preview2">プレビュー</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="id">SP016</td>
+            <td class="name">Tine Mariame</td>
+            <td class="phone">789-456-1230</td>
+            <td class="email">name11@example.com</td>
+            <td class="preview1"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20C/CV%20PDFs/Mariame%20Tine%20履歴書%201.pdf"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20C/Pictures/Tine%20Mariame.pdf"
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <td class="id">SP017</td>
+            <td class="name">Kandji Khadim</td>
+            <td class="phone">654-321-9870</td>
+            <td class="email">name12@example.com</td>
+            <td class="preview1"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20C/CV%20PDFs/kandji%20khadim%20履歴書5.pdf"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20C/Pictures/Kandji%20Khadim.pdf"
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <td class="id">SP018</td>
+            <td class="name">Ba Imame Malick</td>
+            <td class="phone">072-377-9254</td>
+            <td class="email">name13@example.com</td>
+            <td class="preview1"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20C/CV%20PDFs/Imame%20Malick%20ba%20履歴書6.pdf"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20C/Pictures/Ba%20Imame%20Malick.pdf"
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <td class="id">SP019</td>
+            <td class="name">Gueye Fatima Zahra</td>
+            <td class="phone">143-426-9154</td>
+            <td class="email">name14@example.com</td>
+            <td class="preview1"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20C/CV%20PDFs/Gueye%20Fatima%20Zahra%20履歴書7.pdf"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20C/Pictures/Gueye%20Fatima%20Zahra.pdf"
+                    target="_blank">見る</a></td>
+        </tr>
+        <tr>
+            <td class="id">SP020</td>
+            <td class="name">Dia Awa</td>
+            <td class="phone">025-250-2017</td>
+            <td class="email">name15@example.com</td>
+            <td class="preview1"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20C/CV%20PDFs/Dia%20Awa%20履歴書16.pdf"
+                    target="_blank">見る</a></td>
+            <td class="preview2"><a
+                    href="http://127.0.0.1:5500/Database/students/Class%20C/Pictures/Dia%20Awa.pdf"
+                    target="_blank">見る</a></td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+const allRows = [
+    { group: 'A', id: 1, name: "Ba Abdoulaye", phone: "123-456-7890", email: "name1@example.com", pdf: "http://127.0.0.1:5500/Database/students/Class%20A/CV%20PDFs/Ba%20Abdoulaye%20履歴書9.pdf", pdf: "http://127.0.0.1:5500/Database/students/Class%20A/Pictures/Ba%20Abdoulaye.pdf" },
+    { group: 'A', id: 2, name: "Sylla khalilou", phone: "098-765-4321", email: "name2@example.com", pdf: "http://127.0.0.1:5500/Database/students/Class%20A/CV%20PDFs/Sylla%20khalilou%20履歴書4.pdf" },
+    { group: 'A', id: 3, name: "Sylla Aïssatou Dia", phone: "084-756-5004", email: "name3@example.com", pdf: "http://127.0.0.1:5500/Database/students/Class%20A/CV%20PDFs/Sylla%20Aissatou%20Dia%20履歴書13.pdf" },
+    { group: 'A', id: 4, name: "Sow Mansour", phone: "011-984-9320", email: "name4@example.com", pdf: "http://127.0.0.1:5500/Database/students/Class%20A/CV%20PDFs/Sow%20MAnsour%20履歴書3.pdf" },
+    { group: 'A', id: 5, name: "Seck Mame Khoudia", phone: "027-296-158", email: "name5@example.com", pdf: "http://127.0.0.1:5500/Database/students/Class%20A/CV%20PDFs/Seck%20Mame%20Khoudia%20履歴書2.pdf" },
+    { group: 'B', id: 6, name: "Sarr Abdoulaye", phone: "456-123-7890", email: "name6@example.com", pdf: "http://127.0.0.1:5500/Database/students/Class%20B/CV%20PDFs/Sarr%20Abdoulaye%20履歴書8.pdf" },
+    { group: 'B', id: 7, name: "Ndiaye Diarra", phone: "321-654-0987", email: "name7@example.com", pdf: "http://127.0.0.1:5500/Database/students/Class%20B/CV%20PDFs/Ndiaye%20Diarra%20履歴書14.pdf" },
+    { group: 'B', id: 8, name: "Ndiaye Adama", phone: "917-468-0745", email: "name8@example.com", pdf: "http://127.0.0.1:5500/Database/students/Class%20B/CV%20PDFs/Ndiaye%20Adama%20履歴書11.pdf" },
+    { group: 'B', id: 9, name: "Ndiaye Abdoulaye", phone: "264-759-3702", email: "name9@example.com", pdf: "http://127.0.0.1:5500/Database/students/Class%20B/CV%20PDFs/Ndiaye%20Abdoulaye%20履歴書10.pdf" },
+    { group: 'B', id: 10, name: "Missirah Abdoulaye", phone: "456-123-7890", email: "name10@example.com", pdf: "http://127.0.0.1:5500/Database/students/Class%20B/CV%20PDFs/Missirah%20Abdoulaye%20履歴書15.pdf" },
+    { group: 'C', id: 11, name: "Tine Mariame", phone: "789-456-1230", email: "name11@example.com", pdf: "http://127.0.0.1:5500/Database/students/Class%20C/CV%20PDFs/Mariame%20Tine%20履歴書%201.pdf" },
+    { group: 'C', id: 12, name: "Kandji Khadim", phone: "654-321-9870", email: "name12@example.com", pdf: "http://127.0.0.1:5500/Database/students/Class%20C/CV%20PDFs/kandji%20khadim%20履歴書5.pdf" },
+    { group: 'C', id: 13, name: "Ba Imame Malick", phone: "072-377-9254", email: "name13@example.com", pdf: "http://127.0.0.1:5500/Database/students/Class%20C/CV%20PDFs/Imame%20Malick%20ba%20履歴書6.pdf" },
+    { group: 'C', id: 14, name: "Gueye Fatima Zahra", phone: "143-426-9154", email: "name14@example.com", pdf: "http://127.0.0.1:5500/Database/students/Class%20C/CV%20PDFs/Gueye%20Fatima%20Zahra%20履歴書7.pdf" },
+    { group: 'C', id: 15, name: "Dia Awa", phone: "025-250-2017", email: "name15@example.com", pdf: "http://127.0.0.1:5500/Database/students/Class%20C/CV%20PDFs/Dia%20Awa%20履歴書16.pdf"},
+    { group: 'D', id: 16, name: "Tine Mariame", phone: "789-456-1230", email: "name11@example.com", pdf: "http://127.0.0.1:5500/Database/students/Class%20C/CV%20PDFs/Mariame%20Tine%20履歴書%201.pdf" },
+    { group: 'D', id: 17, name: "Kandji Khadim", phone: "654-321-9870", email: "name12@example.com", pdf: "http://127.0.0.1:5500/Database/students/Class%20C/CV%20PDFs/kandji%20khadim%20履歴書5.pdf" },
+    { group: 'D', id: 18, name: "Ba Imame Malick", phone: "072-377-9254", email: "name13@example.com", pdf: "http://127.0.0.1:5500/Database/students/Class%20C/CV%20PDFs/Imame%20Malick%20ba%20履歴書6.pdf" },
+    { group: 'D', id: 19, name: "Gueye Fatima Zahra", phone: "143-426-9154", email: "name19@example.com", pdf: "http://127.0.0.1:5500/Database/students/Class%20C/CV%20PDFs/Gueye%20Fatima%20Zahra%20履歴書7.pdf" },
+    { group: 'D', id: 20, name: "Dia Awa", phone: "025-250-2017", email: "name20@example.com", pdf: "http://127.0.0.1:5500/Database/students/Class%20C/CV%20PDFs/Dia%20Awa%20履歴書16.pdf"}
+
+];
+
+function showTable(groupId) {
+    // Hide all tables
+    document.querySelectorAll('table').forEach(table => {
+        table.style.display = 'none';
+    });
+
+    // Show the selected table
+    const selectedTable = document.getElementById(groupId);
+    if (selectedTable) {
+        selectedTable.style.display = 'table';
+    }
+}
+        function performSearch() {
+    const searchValue = document.getElementById('searchInput').value.trim().toLowerCase();
+    const searchResultTable = document.getElementById('searchResultTable');
+    const searchResultBody = document.getElementById('searchResultBody');
+
+    // Clear previous search results
+    searchResultBody.innerHTML = '';
+
+    // Find matching rows
+    const results = allRows.filter(row => {
+        return (
+            row.id.toString().includes(searchValue) ||
+            row.name.toLowerCase().includes(searchValue) ||
+            row.phone.toLowerCase().includes(searchValue)
+        );
+    });
+
+    // Display results
+    if (results.length > 0) {
+        searchResultTable.style.display = 'table';
+
+        results.forEach(result => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="id">${result.id}</td>
+                <td class="name">${result.name}</td>
+                <td class="phone">${result.phone}</td>
+                <td class="email">${result.email}</td>
+                <td class="preview1"><a href="${result.pdf1}" target="_blank">見る</a></td>
+                <td class="preview2"><a href="${result.pdf2}" target="_blank">見る</a></td>
+            `;
+            searchResultBody.appendChild(tr);
+        });
+    } else {
+        searchResultTable.style.display = 'none';
+    }
+}
+
+// Show Group A table by default
+showTable('goupeA');
+function toggleSubMenu(button) {
+  const subMenu = button.nextElementSibling;
+  if (subMenu && subMenu.classList.contains('sub-buttons')) {
+      button.classList.toggle('open');
+      subMenu.classList.toggle('open');
+  }
+}
+
+// Show Group A table by default
+showTable('goupeA');
+</script>
+
+</body>
+</html>

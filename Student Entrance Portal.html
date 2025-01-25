@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student</title>
+    <style>
+        /* Basic Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        /* Body Background */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+        }
+        /* Upper Section */
+        .upper-section {
+            width: 100%;
+            height: 190px; 
+            background-size: 100%;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),
+            url('/Database/Pictures/Images/blackhand.png');
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgb(12, 12, 12);
+            font-size: 20px;
+        }
+        /* Top Bar */
+        .top-bar {
+            width: 100%;
+            height: 60px;
+            background-color: #245715;
+            justify-content: space-between;/* Space buttons evenly */
+            padding: 10px 20px;
+            color: white;
+            display: flex;/* Use flexbox for layout */
+            align-items: center;
+            padding: 10px 20px; /* Add padding to buttons */
+            font-size: 16px; /* Adjust font size */
+            transition: background-color 0.3s; /* Smooth hover effect */
+            position: flex;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .top-bar h1 {
+            font-size: 25px;
+            margin: 0;
+            color: white;
+        }
+
+        .top-bar a {
+            padding: 05px 10px;
+            background-color: #283a23;
+            color: white;
+            text-decoration: none;
+            display: flex;/* Use flexbox for layout */
+            border-radius: 5px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .top-bar a:hover {
+            background-color: #555;
+            transform: scale(1.1);
+        }
+
+        /* Lower Section */
+        .lower-section {
+            width: 100%;
+            height: calc(90vh - 100px); /* Fill remaining space */
+            margin-top: 1px; /* Push below the upper section */
+            background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),
+            url('/Database/Pictures/Images/414747_l-1024x683.jpg');
+            background-size: cover;
+            background-position: center;
+            background-color: rgba(247, 238, 238, 0.116); /* Semi-transparent overlay */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Table Styles */
+        table {
+            width: 60%;
+            border-collapse: collapse;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
+            border-radius: 25px; /* Rounded edges */
+            overflow: hidden; /* Ensures contents are inside the curved border */
+            backdrop-filter: blur(20px); /* Adds a blurry background effect */
+        }
+        td {
+            padding: 10px;
+            text-align: center;
+            background-color: #f4f4f436;
+        }
+        th {
+            background-color: #245715;
+            padding: 10px;
+            color: white;
+        }
+        .Date {
+            width: 2px;
+            text-align: center;
+        }
+        /* Responsive Styling */
+        @media (max-width: 768px) {
+            .top-bar {
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: center;
+                text-align: center;
+            }
+
+            table {
+                width: 100%;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Upper Section -->
+    <div class="upper-section">
+        <img src="/Database/Pictures/Logos/Picture 1.png" style="width:60%;" alt="centered image">
+    </div>
+    <!-- Top Bar -->
+      <div class="top-bar">
+          <h1>ホーム</h1>
+          <a href="http://127.0.0.1:5500/Students%20Portal/Entrance%20Portal/Materials.html">Materiels</a>
+          <a href="xxxx.html">Exmination</a>
+          <a href="http://127.0.0.1:5500/Main%20Entry%20Portal/Main%20Portal.html">ログアウト</a>
+      </div>
+    <!-- Lower Section -->
+    <div class="lower-section">
+        <table role="table" aria-label="Announcements">
+            <thead>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Annonces</th>
+                </tr>
+            </thead>
+            <tbody id="announcementTable">
+                <!-- Announcements will load here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function loadAnnouncements() {
+            const now = new Date().getTime();
+            const threeMonthsAgo = now - 90 * 24 * 60 * 60 * 1000;
+            const savedAnnouncements = JSON.parse(localStorage.getItem('announcements')) || [];
+
+            // Filter out expired announcements
+            const validAnnouncements = savedAnnouncements.filter(announcement =>
+                new Date(announcement.date).getTime() > threeMonthsAgo
+            );
+
+            // Save back the valid announcements to localStorage
+            localStorage.setItem('announcements', JSON.stringify(validAnnouncements));
+
+            // Populate the table
+            const tableBody = document.getElementById('announcementTable');
+            tableBody.innerHTML = '';
+
+            validAnnouncements.forEach(announcement => {
+                const formattedDate = new Intl.DateTimeFormat('ja-JP', { dateStyle: 'medium' }).format(new Date(announcement.date));
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${formattedDate}</td>
+                    <td>${announcement.text}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        loadAnnouncements();
+    </script>
+</body>
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fatima's Portal</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+        /* Basic Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Top Bar Styling */
+        .top-bar {
+            width: 100%;
+            height: 80px;
+            background-color: #245715;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .top-bar h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .top-bar .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .top-bar .user-info span {
+            margin-right: 20px;
+            font-size: 18px;
+        }
+
+        .top-bar .logout-btn {
+            padding: 5px 10px;
+            background-color: #08291a;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 200px;
+            height: 100%;
+            background-color: #245715;
+            color: white;
+            position: fixed;
+            height: 100vh;
+            padding: 10px 0;
+            left: 0;
+        }
+
+        .sidebar-button, .sub-button {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            background: none;
+            width: 100%;
+            cursor: pointer;
+            border: none;
+            text-align: left;
+            font-size: 16px; /* Ensure font size consistency */
+        }
+        .sidebar-button.has-sub {
+          position: relative; /* Ensure the dropdown arrow aligns properly */
+        }
+
+        .sidebar-button:hover, .sub-button:hover {
+            background-color: #575757;
+        }
+
+        .sub-buttons {
+            display: none;
+            padding-left: 20px;
+        }
+
+        .sidebar-button.has-sub::after {
+            content: "▸"; /* Right arrow */
+            position: absolute;
+            right: 20px;
+            transform: rotate(0deg);
+            transition: transform 0.3s;
+        }
+
+        .sidebar-button.has-sub.open::after {
+            transform: rotate(90deg); /* Down arrow */
+        }
+
+        .sub-buttons.open {
+            display: block;
+        }
+
+        /* Content Button Styling */
+        .content-button {
+          display: inline-block;
+          background-color: #245715;
+          color: white;
+          padding: 10px 20px;
+          font-size: 16px;
+          margin: 10px;
+          margin-left:60px;
+          border: none;
+          border-radius: 5px;
+          text-align: center;
+          text-decoration: none;
+          cursor: pointer;
+      }
+
+
+        .content-button:hover {
+            background-color: #575757;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding-left: 160px; /* Adjust for sidebar width */
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 80px;
+        }
+
+        #logo {
+            height: 80px;
+        }
+
+        h2 {
+            margin-left: 60px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        table {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            margin-bottom: 50px;
+            table-layout: fixed;
+        }
+
+        td,th {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            width: 20%;
+            height: 50px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-align: center;
+            vertical-align: middle
+        }
+        th:first-child, td:first-child {
+          border: 1px solid #ddd;
+          padding: 5px;
+          text-align: center;
+          width: 10%;
+          height: 50px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          text-align: center;
+          vertical-align: middle
+      }
+
+        th {
+            background-color: #245715;
+            color: white;
+        }
+
+        td[contenteditable] {
+            background-color: rgb(254, 255, 249);
+        }
+
+        section:last-of-type {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        #monthly-table td a {
+            text-decoration: none;
+            color: #245715;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <h1>Satomi Project</h1>
+          <div class="user-info">
+          <span>ようこそ, Fatima 先生</span>
+          <a href="http://127.0.0.1:5500/Main%20Entry%20Portal/Main%20Portal.html" class="logout-btn">ログアウト</a>
+      </div>
+  </div>
+     
+  <!-- Side Bar -->
+  <div class="sidebar">
+    <br><br><br><br>
+    <a href="http://127.0.0.1:5500/Teacher_s%20side/Annoucement%20board/Fatima%20annoucement.html" class="sidebar-button">教師からのお知らせ</a>
+    <br><br>
+    <a href="http://127.0.0.1:5500/Teacher_s%20side/Lesson%20Program/Fatima%20LP.html" class="sidebar-button">レッスンプログラム</a>
+    <br><br>
+    <a href="http://127.0.0.1:5500/Teacher_s%20side/Student%20Inventory/Fatima%20SI.html" class="sidebar-button">学生の情報</a>
+    <br><br>
+    <button class="sidebar-button has-sub" onclick="toggleSubMenu(this)">学生の出席状況</button>
+    <div class="sub-buttons">
+      <a href="http://127.0.0.1:5500/Teacher_s%20side/Student%20Attendance/Fatima%20SA3.html" class="sub-button">Group 3 </a>
+  </div>
+    <br><br>
+    <button class="sidebar-button has-sub" onclick="toggleSubMenu(this)">学生の成績</button>
+    <div class="sub-buttons">
+        <a href="http://127.0.0.1:5500/Teacher_s%20side/Student%20grades/Fatima%20SG3.html" class="sub-button">Group 3 </a>
+    </div>
+    <br><br>
+    <a href="http://127.0.0.1:5500/Teacher_s%20side/JLPT/Fatima%20JLPT.html" class="sidebar-button">JLPT</a>
+</div>
+  <header>
+    <img id="logo" src="/Database/Pictures/Logos/Picture 1.png" width="25%">
+    <span id="current-date"></span>
+  </header>
+  <h2>週間タイムテーブル</h2>
+  <table id="editable-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Group 3 (13:00〜16:00)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>月</td>
+        <td contenteditable="true"></td>
+      </tr>
+      <tr>
+        <td>火</td>
+        <td contenteditable="true"></td>
+      </tr>
+      <tr>
+        <td>水</td>
+        <td contenteditable="true"></td>
+      </tr>
+      <tr>
+        <td>木</td>
+        <td contenteditable="true"></td>
+      </tr>
+    </tbody>
+  </table>
+<section>
+  <button class="content-button" onclick="saveProgress()">保存</button>
+  <button class="content-button" id="download-btn" onclick="generatePDF()">PDF</button>
+</section>
+  <h2>月間タイムテーブル</h2>
+  <table id="monthly-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>1週目</th>
+        <th>2週目</th>
+        <th>3週目</th>
+        <th>4週目</th>
+      </tr>
+    </thead>
+    <tbody>
+      <script>
+        const months = ["2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
+        document.write(months.map(month => 
+          `<tr>
+            <td>${month}</td>
+            <td id="${month.toLowerCase()}-week-1"></td>
+            <td id="${month.toLowerCase()}-week-2"></td>
+            <td id="${month.toLowerCase()}-week-3"></td>
+            <td id="${month.toLowerCase()}-week-4"></td>
+          </tr>`
+        ).join(''));
+      </script>
+    </tbody>
+  </table>
+
+  <script>
+    // Display the current date
+    const dateElement = document.getElementById("current-date");
+    const currentDate = new Date();
+    dateElement.textContent = `Date: ${currentDate.toLocaleDateString()}`;
+
+    let weekCounter = 0;
+
+    // Function to save progress
+    function saveProgress() {
+      const tableCells = document.querySelectorAll("#editable-table tbody td[contenteditable]");
+      const progressData = Array.from(tableCells).map(cell => cell.textContent.trim());
+      localStorage.setItem("weeklyTableProgress", JSON.stringify(progressData));
+      alert("Progress saved successfully!");
+    }
+
+    // Load saved progress on page load
+    window.onload = function () {
+      const savedData = JSON.parse(localStorage.getItem("weeklyTableProgress") || "[]");
+      const tableCells = document.querySelectorAll("#editable-table tbody td[contenteditable]");
+      savedData.forEach((data, index) => {
+        if (tableCells[index]) tableCells[index].textContent = data;
+      });
+      validateTable();
+    };
+
+    // Validate table data before downloading PDF
+    function validateTable() {
+      const tableCells = document.querySelectorAll("#editable-table tbody td[contenteditable]");
+      const isTableComplete = Array.from(tableCells).every(cell => cell.textContent.trim() !== "");
+      const downloadBtn = document.getElementById("download-btn");
+      downloadBtn.disabled = !isTableComplete;
+    }
+
+    // Monitor changes in the table
+    document.querySelectorAll("#editable-table tbody td[contenteditable]").forEach(cell => {
+      cell.addEventListener("input", validateTable);
+    });
+
+    // Generate PDF
+    function generatePDF() {
+      const { jsPDF } = window.jspdf;
+      if (weekCounter >= 44) {
+        alert("All weeks have been recorded.");
+        return;
+      }
+
+      const monthIndex = Math.floor(weekCounter / 4);
+      const weekIndex = (weekCounter % 4) + 1;
+      const currentMonth = months[monthIndex];
+      const weekCellId = `${currentMonth.toLowerCase()}-week-${weekIndex}`;
+
+      const pdf = new jsPDF();
+
+      const logo = document.getElementById("logo");
+      html2canvas(logo).then(logoCanvas => {
+        const logoData = logoCanvas.toDataURL("image/png");
+        pdf.addImage(logoData, "PNG", 5, 10, 85, 19);
+
+        const textWidth = pdf.getTextWidth("Student Grades Record");
+        pdf.setFontSize(18);
+        pdf.setFont("helvetica", "bold");
+        pdf.text("Weekly Class Program Report", 65, 45);
+        pdf.line(65, 46, 98 + textWidth, 46); // Adjust underline length dynamically
+
+        pdf.setFontSize(10);
+        pdf.setFont("helvetica", "normal");
+        pdf.text("Official Website: https://satomiproject.jp", 5, 155);
+
+        pdf.setFontSize(10);
+        pdf.text("Contact: satomiproject@gmail.com", 5, 150);
+
+        pdf.setFont("helvetica", "italic");
+        pdf.setFontSize(10);
+        pdf.text("Fatima COULIBALY", 169, 130);
+
+        pdf.setFont("helvetica", "normal");
+        pdf.setFontSize(11);
+        pdf.text("Teacher:................................", 150, 131);
+
+        pdf.setFontSize(15);
+        pdf.text(` ${currentDate.toLocaleDateString()}`, 170, 20);
+
+        const table = document.getElementById("editable-table");
+        html2canvas(table).then(tableCanvas => {
+          const tableData = tableCanvas.toDataURL("image/png");
+          pdf.addImage(tableData, "PNG", 10, 60, 190, 0);
+
+          const pdfBlob = pdf.output("blob");
+          const pdfLink = URL.createObjectURL(pdfBlob);
+
+          const weekCell = document.getElementById(weekCellId);
+          weekCell.innerHTML = `<a href="${pdfLink}" target="_blank">View PDF</a>        <button onclick="this.parentElement.innerHTML = ''">Delete</button>`;
+          pdf.save(`Fatima weekly Program_${currentMonth}_Week_${weekIndex}.pdf`);
+
+          weekCounter++;
+          clearWeeklyTable();
+        });
+      });
+    }
+
+    // Clear table data
+    function clearWeeklyTable() {
+      const tableCells = document.querySelectorAll("#editable-table tbody td[contenteditable]");
+      tableCells.forEach(cell => (cell.textContent = ""));
+      localStorage.removeItem("weeklyTableProgress");
+    }
+      function toggleSubMenu(button) {
+        const subMenu = button.nextElementSibling;
+        if (subMenu && subMenu.classList.contains('sub-buttons')) {
+            button.classList.toggle('open');
+            subMenu.classList.toggle('open');
+        }
+    }
+  </script>
+</body>
+</html>
